@@ -1,0 +1,21 @@
+[package]
+name = "speak-easy"
+version = "0.1.0"
+authors = ["stefanodecillis"]
+edition = "2021"
+description = "Logging functionalities with different levels and rotation options built on top of tokio-rs tracing."
+license = "MIT"
+
+
+[dependencies]
+tracing = "0.1.37"
+tracing-subscriber = "0.3.18"
+tracing-appender = "0.2"
+tracing-core = "0.1.32"
+chrono = "0.4.34"
+
+[profile.dev]
+opt-level = 1
+
+[profile.release]
+opt-level = 3
