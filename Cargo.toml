@@ -1,7 +1,7 @@
 [package]
 name = "speak-easy"
 version = "0.1.0"
-authors = ["stefanodecillis"]
+authors = ["Stefano De Cillis"]
 edition = "2021"
 description = "Logging functionalities with different levels and rotation options built on top of tokio-rs tracing."
 license = "MIT"
