@@ -1,5 +1,10 @@
 {
     "build": {
         "path_prefix": "speak-easy"
+    },
+    "components": {
+        "changelog": {
+            "read_changelog_file": false
+        }
     }
 }
