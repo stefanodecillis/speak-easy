@@ -21,7 +21,7 @@ First, add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-speak-easy = "0.1.0"
+speak-easy = "0.1.1"
 ```
 
 Then, use the library in your code like this:

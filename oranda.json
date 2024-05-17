@@ -1,8 +1,5 @@
 {
     "build": {
-        "path_prefix": "speak-easy",
-        "additional_pages": {
-            "Updates": "CHANGELOG.md"
-        }
+        "path_prefix": "speak-easy"
     }
 }
