@@ -83,6 +83,11 @@
 //! ## License
 //!
 //! This project is licensed under the MIT license.
+//!
+//! ## Contributing
+//! Feel free to open issues and send PRs. We will evaluate them together in the comment section.
+//!
+//!
 
 mod formatter;
 pub use tracing::{debug, error, info, trace, warn, Level};
