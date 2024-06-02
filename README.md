@@ -22,18 +22,31 @@ First, add the following to your `Cargo.toml`:
 ```toml
 [dependencies]
 speak-easy = "0.1.1"
+tokio = { features = ["macros", "rt-multi-thread"], version = "1.37.0" }
 ```
 
 Then, use the library in your code like this:
 
 
 ```rust
-use speak_easy::{SpeakEasy, SpeakConfig, Rotation};
+use speak_easy::speak_easy::SpeakEasy;
+use speak_easy::{info, Level};
+use speak_easy::{Rotation, SpeakConfig};
 
-let speak_config = SpeakConfig::new(Rotation::Minutely, "./logs".to_string(), "my_log".to_string())
+#[tokio::main]
+async fn main() {
+    let speak_config = SpeakConfig::new(
+        Rotation::Minutely,
+        "./logs".to_string(),
+        "my_log".to_string(),
+    )
     .with_cleanup(24 * 60 * 60, 5);
 
-SpeakEasy::init(Level::INFO, Some(config));
+    SpeakEasy::init(Level::INFO, Some(speak_config));
+
+    info!("this is a log");
+}
+
 
 ```
 

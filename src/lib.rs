@@ -33,6 +33,16 @@
 //! ```toml
 //! [dependencies]
 //! speak-easy = "0.1.1"
+//! tokio = { features = ["macros", "rt-multi-thread"], version = "1.37.0" }
+//! ```
+//!
+//! Remeber that the `tokio` dependency is required for the `tracing` crate. Your main function should look like this:
+//!
+//! ```rust
+//! #[tokio::main]
+//! async fn main() {
+//!    // Your code here
+//! }
 //! ```
 //!
 //! Then add this to your crate root:
