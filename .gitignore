@@ -47,3 +47,6 @@ Cargo.lock
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+
+logs/
