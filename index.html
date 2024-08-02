@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" id="oranda" class="dark">
+  <head>
+    <title>speak-easy</title>
+    
+    
+      <link rel="icon" href="/speak-easy/favicon.ico" />
+    
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+      <meta name="description" content="Logging functionalities with different levels and rotation options built on top of tracing and compatible with of tokio-rs." />
+      <meta property="og:description" content="Logging functionalities with different levels and rotation options built on top of tracing and compatible with of tokio-rs." />
+    
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="speak-easy" />
+    
+    
+    
+    <meta http-equiv="Permissions-Policy" content="interest-cohort=()" />
+    <link rel="stylesheet" href="/speak-easy/oranda-v0.6.1.css" />
+    
+    
+  </head>
+  <body>
+    <div class="container">
+      <div class="page-body">
+        
+          <div class="repo_banner">
+            <a href="https://github.com/stefanodecillis/speak-easy">
+              <div class="github-icon" aria-hidden="true"></div>
+              Check out our GitHub!
+            </a>
+          </div>
+        
+
+        <main>
+          <header>
+            
+            <h1 class="title">speak-easy</h1>
+            
+  <nav class="nav">
+    <ul>
+      <li><a href="/speak-easy/">Home</a></li>
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li><a href="/speak-easy/changelog/">Changelog</a></li>
+      
+    </ul>
+  </nav>
+
+          </header>
+
+          
+
+
+    <p><img src="https://raw.githubusercontent.com/stefanodecillis/speak-easy/main/assets/crab-contained.jpg" alt="Speak Easy — Logging functionalities"></p>
+<p><a href="LICENSE" rel="noopener noreferrer"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+<a href="https://crates.io/crates/speak-easy" rel="noopener noreferrer"><img src="https://img.shields.io/crates/v/speak-easy" alt="Crates.io Version"></a></p>
+<h1>Speak-Easy</h1>
+<p>Speak-Easy is a Rust library that provides logging functionalities with different levels and rotation options built on top of tracing and compatible with tokio-rs.</p>
+<h2>Features</h2>
+<ul>
+<li>Different log levels</li>
+<li>Log rotation options</li>
+<li>Cleanup functionality</li>
+</ul>
+<h2>Usage</h2>
+<p>First, add the following to your <code>Cargo.toml</code>:</p>
+<pre style="background-color:#263238;"><span style="color:#89ddff;">[dependencies]
+</span><span style="color:#f07178;">speak-easy </span><span style="color:#89ddff;">= { </span><span style="color:#f07178;">version </span><span style="color:#89ddff;">= "</span><span style="color:#c3e88d;">0.1</span><span style="color:#89ddff;">" }
+</span><span style="color:#f07178;">tokio </span><span style="color:#89ddff;">= { </span><span style="color:#f07178;">features </span><span style="color:#89ddff;">= ["</span><span style="color:#c3e88d;">macros</span><span style="color:#89ddff;">", "</span><span style="color:#c3e88d;">rt-multi-thread</span><span style="color:#89ddff;">"], </span><span style="color:#f07178;">version </span><span style="color:#89ddff;">= "</span><span style="color:#c3e88d;">1.37.0</span><span style="color:#89ddff;">" }
+</span></pre>
+
+<p><strong>Note</strong></p>
+<p>If you want to use Speak-Easy without tokio, you must disable default features:</p>
+<pre style="background-color:#263238;"><span style="color:#89ddff;">[dependencies]
+</span><span style="color:#f07178;">speak-easy </span><span style="color:#89ddff;">= { </span><span style="color:#f07178;">version </span><span style="color:#89ddff;">= "</span><span style="color:#c3e88d;">0.1</span><span style="color:#89ddff;">", </span><span style="color:#f07178;">default-features </span><span style="color:#89ddff;">= </span><span style="color:#f78c6c;">false </span><span style="color:#89ddff;">}
+</span></pre>
+
+<p>Then, use the library in your code like this:</p>
+<pre style="background-color:#263238;"><span style="color:#c792ea;">use </span><span style="color:#eeffff;">speak_easy</span><span style="color:#89ddff;">::</span><span style="color:#eeffff;">speak_easy</span><span style="color:#89ddff;">::</span><span style="color:#eeffff;">SpeakEasy</span><span style="color:#89ddff;">;
+</span><span style="color:#c792ea;">use </span><span style="color:#eeffff;">speak_easy</span><span style="color:#89ddff;">::{</span><span style="color:#eeffff;">info</span><span style="color:#89ddff;">,</span><span style="color:#eeffff;"> Level</span><span style="color:#89ddff;">};
+</span><span style="color:#c792ea;">use </span><span style="color:#eeffff;">speak_easy</span><span style="color:#89ddff;">::{</span><span style="color:#eeffff;">Rotation</span><span style="color:#89ddff;">,</span><span style="color:#eeffff;"> SpeakConfig</span><span style="color:#89ddff;">};
+</span><span style="color:#eeffff;">
+</span><span style="color:#89ddff;">#[</span><span style="color:#eeffff;">tokio::main</span><span style="color:#89ddff;">]
+</span><span style="color:#eeffff;">async </span><span style="font-style:italic;color:#c792ea;">fn </span><span style="color:#82aaff;">main</span><span style="color:#89ddff;">() {
+</span><span style="color:#eeffff;">    </span><span style="font-style:italic;color:#c792ea;">let</span><span style="color:#eeffff;"> speak_config </span><span style="color:#89ddff;">= </span><span style="color:#eeffff;">SpeakConfig</span><span style="color:#89ddff;">::</span><span style="color:#eeffff;">new</span><span style="color:#89ddff;">(
+</span><span style="color:#eeffff;">        Rotation</span><span style="color:#89ddff;">::</span><span style="color:#eeffff;">Minutely</span><span style="color:#89ddff;">,
+</span><span style="color:#eeffff;">        </span><span style="color:#89ddff;">"</span><span style="color:#c3e88d;">./logs</span><span style="color:#89ddff;">"</span><span style="color:#eeffff;">.</span><span style="color:#82aaff;">to_string</span><span style="color:#89ddff;">(),
+</span><span style="color:#eeffff;">        </span><span style="color:#89ddff;">"</span><span style="color:#c3e88d;">my_log</span><span style="color:#89ddff;">"</span><span style="color:#eeffff;">.</span><span style="color:#82aaff;">to_string</span><span style="color:#89ddff;">(),
+</span><span style="color:#eeffff;">    </span><span style="color:#89ddff;">)
+</span><span style="color:#eeffff;">    .</span><span style="color:#82aaff;">with_cleanup</span><span style="color:#89ddff;">(</span><span style="color:#f78c6c;">24 </span><span style="color:#89ddff;">* </span><span style="color:#f78c6c;">60 </span><span style="color:#89ddff;">* </span><span style="color:#f78c6c;">60</span><span style="color:#89ddff;">, </span><span style="color:#f78c6c;">5</span><span style="color:#89ddff;">);
+</span><span style="color:#eeffff;">
+</span><span style="color:#eeffff;">    SpeakEasy</span><span style="color:#89ddff;">::</span><span style="color:#eeffff;">init</span><span style="color:#89ddff;">(</span><span style="color:#eeffff;">Level</span><span style="color:#89ddff;">::</span><span style="color:#eeffff;">INFO</span><span style="color:#89ddff;">, </span><span style="color:#ffcb6b;">Some</span><span style="color:#89ddff;">(</span><span style="color:#eeffff;">speak_config</span><span style="color:#89ddff;">));
+</span><span style="color:#eeffff;">
+</span><span style="color:#eeffff;">    info!</span><span style="color:#89ddff;">("</span><span style="color:#c3e88d;">this is a log</span><span style="color:#89ddff;">");
+</span><span style="color:#89ddff;">}
+</span><span style="color:#eeffff;">
+</span><span style="color:#eeffff;">
+</span></pre>
+
+<p>Please replace "/path/to/log/files" with the actual path where you want to store your log files.</p>
+<h2>License</h2>
+<p>This project is licensed under the MIT License - see the LICENSE file for details.</p>
+<h2>Contributing</h2>
+<p>Feel free to open issues and send PRs. We will evaluate them together in the comment section.</p>
+
+
+
+        </main>
+      </div>
+
+      <footer>
+        
+          <a href="https://github.com/stefanodecillis/speak-easy"><div class="github-icon" aria-hidden="true"></div></a>
+        
+        <span>
+          speak-easy, MIT
+        </span>
+      </footer>
+    </div>
+
+    
+    
+
+    
+
+
+  </body>
+</html>
