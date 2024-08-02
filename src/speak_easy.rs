@@ -13,8 +13,7 @@
 //!
 
 use crate::{
-    formatter::LogsFileFormatter,
-    {Rotation, SpeakConfig},
+    formatter::LogsFileFormatter, processor::spawn_processor, Rotation, SpeakConfig
 };
 use tracing::Level;
 use tracing_subscriber::{
@@ -23,11 +22,6 @@ use tracing_subscriber::{
     layer::SubscriberExt,
     reload,
 };
-
-use std::fs;
-use std::io;
-use std::sync::Arc;
-use tokio::time::{sleep, Duration};
 
 pub struct SpeakEasy {}
 
@@ -73,17 +67,7 @@ impl SpeakEasy {
                 }
 
                 if speak_easy_config.clone().cleanup {
-                    let directory_path = Arc::new(speak_easy_config.directory_path.clone());
-                    let prefix = Arc::new(speak_easy_config.prefix.clone());
-                    let cleanup_interval = Arc::new(speak_easy_config.cleanup_interval);
-                    let holds_num = Arc::new(speak_easy_config.keep_last);
-
-                    tokio::spawn(async move {
-                        loop {
-                            let _ = SpeakEasy::keep_last_logs(&directory_path, &prefix, &holds_num);
-                            sleep(Duration::from_secs(*cleanup_interval)).await;
-                        }
-                    });
+                    spawn_processor(speak_easy_config.directory_path.to_string(), speak_easy_config.prefix.to_string(), speak_easy_config.cleanup_interval, speak_easy_config.keep_last)
                 }
             }
             None => {
@@ -92,31 +76,5 @@ impl SpeakEasy {
                 }
             }
         };
-    }
-
-    fn keep_last_logs(directory_path: &str, prefix: &str, holds_num: &usize) -> io::Result<()> {
-        // Read the directory
-        let mut entries = fs::read_dir(directory_path)?
-            .map(|res| res.map(|e| e.path()))
-            .collect::<Result<Vec<_>, io::Error>>()?;
-
-        // Filter the entries to only include files that start with the prefix
-        entries.retain(|path| {
-            path.file_name()
-                .and_then(|name| name.to_str())
-                .map(|name| name.starts_with(prefix))
-                .unwrap_or(false)
-        });
-
-        // Sort the entries by modified date in descending order
-        entries.sort_by_key(|path| fs::metadata(path).and_then(|meta| meta.modified()).unwrap());
-        entries.reverse();
-
-        // Remove all but the last five entries
-        for path in entries.into_iter().skip(*holds_num) {
-            fs::remove_file(path)?;
-        }
-
-        Ok(())
     }
 }

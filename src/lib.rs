@@ -2,7 +2,7 @@
 
 //! # speak-easy
 //!
-//! Logging functionalities with different levels and rotation options built on top of tokio-rs tracing.
+//! Logging functionalities with different levels and rotation options built on top of tracing and compatible with of tokio-rs
 //!
 //! ## Features
 //!| Feature                          | Status |
@@ -32,11 +32,20 @@
 //!
 //! ```toml
 //! [dependencies]
-//! speak-easy = "0.1.1"
+//! speak-easy = { version = "0.1" }
 //! tokio = { features = ["macros", "rt-multi-thread"], version = "1.37.0" }
 //! ```
+//! 
+//! **Note**
+//! 
+//! If you want to use Speak-Easy without tokio, you must disable default features:
+//! 
+//! ```toml
+//! [dependencies]
+//! speak-easy = { version = "0.1", default-features = false }
+//! ```
 //!
-//! Remeber that the `tokio` dependency is required for the `tracing` crate. Your main function should look like this:
+//! Your main function should look like this:
 //!
 //! ```rust
 //! #[tokio::main]
@@ -100,6 +109,7 @@
 //!
 
 mod formatter;
+mod processor;
 pub use tracing::{debug, error, info, trace, warn, Level};
 pub mod speak_easy;
 

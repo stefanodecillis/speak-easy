@@ -7,7 +7,7 @@
 
 # Speak-Easy
 
-Speak-Easy is a Rust library that provides logging functionalities with different levels and rotation options built on top of tokio-rs tracing.
+Speak-Easy is a Rust library that provides logging functionalities with different levels and rotation options built on top of tracing and compatible with tokio-rs.
 
 ## Features
 
@@ -21,8 +21,17 @@ First, add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-speak-easy = "0.1.1"
+speak-easy = { version = "0.1" }
 tokio = { features = ["macros", "rt-multi-thread"], version = "1.37.0" }
+```
+
+**Note**
+
+If you want to use Speak-Easy without tokio, you must disable default features:
+
+```toml
+[dependencies]
+speak-easy = { version = "0.1", default-features = false }
 ```
 
 Then, use the library in your code like this:
